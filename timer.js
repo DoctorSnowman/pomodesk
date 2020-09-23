@@ -1,6 +1,6 @@
-let victoryClip = new Audio('./FF7 AC Victory Fanfare Ringtone.mp3');
+let victoryClip = new Audio('./resources/FF7 AC Victory Fanfare Ringtone.mp3');
 
-let durationInMinutes = 1;
+let durationInMinutes = 25;
 let end, x;
 
 let startButton = document.getElementById("start-button");
@@ -14,6 +14,7 @@ function timerLoop () {
 
   let minutes = Math.floor((remaining % (1000 * 60 * 60)) / (1000 * 60));
   let seconds = Math.floor((remaining % (1000 * 60)) / 1000);
+  if (seconds < 10) seconds = `0${seconds}`;
 
   timeDisplay.innerHTML = minutes + ":" + seconds;
 
@@ -31,7 +32,7 @@ function startTimer () {
 
   startButton.style.display = 'none';
   startButton.innerHTML = 'One More!';
-  timeDisplay.innerHTML = 'Ganbatte!';
+  timeDisplay.innerHTML = 'Be here now!';
   timeDisplay.style.display = 'block';
 }
 

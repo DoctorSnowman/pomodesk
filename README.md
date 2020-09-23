@@ -19,6 +19,5 @@ App may be found in: [pomodesk directory](./pomodesk-darwin-x64)
 ## Future Feature Plans
 - pause/unpause with `spacebar`
 - quit current countdown with `esc`
-- format countdown to always show time with 3 or 4 digits (00:00)
 - play boxing bell audio clip (or something motivational) briefly at start
 - add icon to replace default 'electron' icon
