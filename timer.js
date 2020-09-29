@@ -1,10 +1,12 @@
 let victoryClip = new Audio('./resources/FF7 AC Victory Fanfare Ringtone.mp3');
 
 let durationInMinutes = 25;
+let sessionCount = 0;
 let end, x;
 
 let startButton = document.getElementById("start-button");
 let timeDisplay = document.getElementById("time-display");
+let counter = document.getElementById("counter");
 startButton.addEventListener("click", startTimer);
 
 function timerLoop () {
@@ -23,6 +25,8 @@ function timerLoop () {
     timeDisplay.innerHTML = "VICTORY!";
     victoryClip.play();
     startButton.style.display = 'block';
+    sessionCount++;
+    counter.innerHTML = sessionCount.toString();
   }
 }
 

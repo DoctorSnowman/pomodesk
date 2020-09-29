@@ -1,6 +1,7 @@
 body {
     text-align: center;
     font-size: 1.6rem;
+    margin: 0;
 }
 
 button {
@@ -19,9 +20,9 @@ p {
     font-size: 4rem;
 }
 
-.vertical-center {
-    justify-content: center;
-    align-items: center;
+#counter {
+    position: absolute;
+    margin-left: 10px;
 }
 
 .center {
