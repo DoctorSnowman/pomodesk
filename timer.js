@@ -3,7 +3,7 @@ let victoryClip = new Audio('./resources/FF7 AC Victory Fanfare Ringtone.mp3');
 // configuration options
 const durationInMinutes = 25;
 const durationInMs = durationInMinutes * 60000;
-const isTimeHidden = false;
+const isTimeHidden = true;
 const pausePeriod = 800;
 const startMessageDuration = 2 * 1000;
 
@@ -49,6 +49,7 @@ function onPausePress () {
     timeDisplay.innerHTML = "~ Paused ~";
     pauseDuration = 0;
   } else {
+    timeDisplay.innerHTML = "In Progress";
     previousTime = new Date().getTime();
     timeDisplay.style.opacity = '1'.toString();
   }

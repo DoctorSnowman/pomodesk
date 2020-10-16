@@ -8,7 +8,8 @@ npm start
 ```
 ## Controls
 `p` : pause session  
-`d` : cancel session
+`d` : cancel session  
+`⌘+r` : restart app (clears session count)
 
 ## Build App Executable
 Start terminal in project root directory.
@@ -17,9 +18,10 @@ Start terminal in project root directory.
 ### Build For Current OS + Architecture
 `electron-packager ./ pomodesk`
 
-App may be found in: [pomodesk directory](./pomodesk-darwin-x64)
+Built App will be in the [pomodesk directory](./pomodesk-darwin-x64)
 
 ## Future Feature Plans
+- add pause counter and display (don't show if zero)
 - option to mark session "success" or "failure" after session
     - failure count in red, success count in blue/green
     - possibly track by 0-10 continuum instead
