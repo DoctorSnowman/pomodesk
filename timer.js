@@ -39,6 +39,8 @@ window.onkeypress = reactToKeys;
 init();
 
 function init() {
+  store.set("sessionCount", 0); //todo: remove this once daily reset functionality is in place
+
   victoryClip = new Audio(store.get('victoryClipPath'));
   victoryClip.volume = store.get("volume");
   let sessionsAtLaunch = store.get("sessionCount");

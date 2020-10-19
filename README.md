@@ -22,6 +22,8 @@ Built App will be in the [pomodesk directory](./pomodesk-darwin-x64)
 
 ## Future Feature Plans
 - reset session count on new day (default to CST)
+- track week and lifetime sessions
+- merge new config defaults with existing preference file for backwards compatibility
 - show options on `esc`
     - counter display: always, between sessions, never
     - key mapping
