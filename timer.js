@@ -5,11 +5,11 @@ const store = new Store({
   defaults: {
     durationInMinutes: 25,
     isTimeHidden: false,
+    sessionCount: 0,
+    volume: 1,
+    victoryClipPath: './resources/FF7 AC Victory Fanfare Ringtone.mp3',
   }
 });
-
-// resources
-let victoryClip = new Audio('./resources/FF7 AC Victory Fanfare Ringtone.mp3');
 
 // configuration options
 const pausePeriod = 800;
@@ -17,13 +17,12 @@ const startMessageDuration = 2 * 1000; // 2s
 const framesPerSecond = 24;
 
 // init
-let sessionCount = 0;
 let pressedKeys = {};
 let isTimeDisplayDirty = true;
 let isPaused = false;
 let isSessionRunning = false;
-let elapsed, previousTime, asyncTimerRef, pauseDuration;
-let durationInMs = getDurationInMs();
+let elapsed, previousTime, asyncTimerRef, pauseDuration, durationInMs;
+let victoryClip;
 
 // element references
 let startButton = document.getElementById("start-button");
@@ -36,6 +35,17 @@ startButton.addEventListener("click", startTimer);
 window.onkeyup = function(e) { pressedKeys[e.key] = false; };
 window.onkeydown = function(e) { pressedKeys[e.key] = true; };
 window.onkeypress = reactToKeys;
+
+init();
+
+function init() {
+  victoryClip = new Audio(store.get('victoryClipPath'));
+  victoryClip.volume = store.get("volume");
+  let sessionsAtLaunch = store.get("sessionCount");
+  if (sessionsAtLaunch > 0) {
+    counter.innerHTML = sessionsAtLaunch.toString();
+  }
+}
 
 function reactToKeys(event) {
   if (isSessionRunning) {
@@ -112,6 +122,7 @@ function smooth(t) {
 
 function startTimer () {
   elapsed = 0;
+  durationInMs = store.get("durationInMinutes") * 60000;
   previousTime = new Date().getTime();
   asyncTimerRef = setInterval(timerLoop, 1000 / framesPerSecond);
 
@@ -134,8 +145,8 @@ function cancelSession () {
 function completeSession() {
   timeDisplay.innerHTML = "VICTORY!";
   victoryClip.play();
-  sessionCount++;
-  counter.innerHTML = sessionCount.toString();
+  let newCount = incrementSessionCount();
+  counter.innerHTML = newCount.toString();
   resetElements();
 }
 
@@ -146,7 +157,19 @@ function resetElements () {
   isSessionRunning = false;
 }
 
-//todo: called on init, this should be updated whenever user sets duration preference
-function getDurationInMs() {
-  return store.get("durationInMinutes") * 60000;
+function incrementSessionCount() {
+  let count = store.get("sessionCount") + 1;
+  store.set("sessionCount", count);
+  return count;
+}
+
+function setVictoryClip(path) {
+  victoryClip = new Audio(path);
+  victoryClip.volume = store.get("volume");
+  store.set('victoryClipPath', path);
+}
+
+function setVolume(volume) {
+  store.set("volume",volume);
+  victoryClip.volume = volume;
 }

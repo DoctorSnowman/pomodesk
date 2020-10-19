@@ -27,11 +27,17 @@ Built App will be in the [pomodesk directory](./pomodesk-darwin-x64)
     - key mapping
     - background color selection
     - start and end messages
+    - button label text
     - end song
     - volume
     - track session count?
     - session count auto-reset at 0200?
     - config storage location
+- extract config to new object and control get/set there
+    - atm can manually bypass setters directly through store
+- streamline store
+    - using strings for map keys is bad == gross
+    - calling syntax is ugly, keep copy of config model for values and auto-save on update
 - add start audio (maybe default is boxing bell?)
 - add pause counter and display
   - don't show if zero
