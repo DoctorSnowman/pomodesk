@@ -1,11 +1,20 @@
+const Store = require('./store.js');
+
+const store = new Store({
+  configName: 'pomodesk',
+  defaults: {
+    durationInMinutes: 25,
+    isTimeHidden: false,
+  }
+});
+
+// resources
 let victoryClip = new Audio('./resources/FF7 AC Victory Fanfare Ringtone.mp3');
 
 // configuration options
-const durationInMinutes = 25;
-const durationInMs = durationInMinutes * 60000;
-const isTimeHidden = true;
 const pausePeriod = 800;
-const startMessageDuration = 2 * 1000;
+const startMessageDuration = 2 * 1000; // 2s
+const framesPerSecond = 24;
 
 // init
 let sessionCount = 0;
@@ -14,6 +23,7 @@ let isTimeDisplayDirty = true;
 let isPaused = false;
 let isSessionRunning = false;
 let elapsed, previousTime, asyncTimerRef, pauseDuration;
+let durationInMs = getDurationInMs();
 
 // element references
 let startButton = document.getElementById("start-button");
@@ -56,7 +66,7 @@ function onPausePress () {
 }
 
 function displayTimer() {
-  if (!isTimeHidden || pressedKeys[" "]) {
+  if (!store.get("isTimeHidden") || pressedKeys[" "]) {
     let remaining = durationInMs - elapsed;
     if (remaining < 0) remaining = 0;
     let minutes = Math.floor((remaining % (1000 * 60 * 60)) / (1000 * 60));
@@ -64,7 +74,7 @@ function displayTimer() {
     if (seconds < 10) seconds = `0${seconds}`;
     timeDisplay.innerHTML = minutes + ":" + seconds;
     isTimeDisplayDirty = true;
-  } else if (isTimeHidden && isTimeDisplayDirty) {
+  } else if (store.get("isTimeHidden") && isTimeDisplayDirty) {
     timeDisplay.innerHTML = "In Progress";
     isTimeDisplayDirty = false;
   }
@@ -103,7 +113,7 @@ function smooth(t) {
 function startTimer () {
   elapsed = 0;
   previousTime = new Date().getTime();
-  asyncTimerRef = setInterval(timerLoop, 1000 / 24);
+  asyncTimerRef = setInterval(timerLoop, 1000 / framesPerSecond);
 
   startButton.style.display = 'none';
   startButton.innerHTML = 'One More!';
@@ -134,4 +144,9 @@ function resetElements () {
   startButton.style.display = 'block';
   body.style.backgroundColor = "white";
   isSessionRunning = false;
+}
+
+//todo: called on init, this should be updated whenever user sets duration preference
+function getDurationInMs() {
+  return store.get("durationInMinutes") * 60000;
 }
