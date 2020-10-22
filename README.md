@@ -19,9 +19,10 @@ Start terminal in project root directory.
 `electron-packager ./ pomodesk`
 
 Built App will be in the [pomodesk directory](./pomodesk-darwin-x64)
+Preferences file is stored in user's home preference directory:
+- OSX: ~/Library/Preferences/pomodesk.json
 
 ## Future Feature Plans
-- reset session count on new day (default to CST)
 - track week and lifetime sessions
 - merge new config defaults with existing preference file for backwards compatibility
 - show options on `esc`

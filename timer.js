@@ -1,13 +1,16 @@
+const dayjs = require('dayjs');
+
 const Store = require('./store.js');
 
 const store = new Store({
   configName: 'pomodesk',
   defaults: {
     durationInMinutes: 25,
-    isTimeHidden: false,
+    isTimeHidden: true,
     sessionCount: 0,
-    volume: 1,
+    volume: 0.8,
     victoryClipPath: './resources/FF7 AC Victory Fanfare Ringtone.mp3',
+    lastSessionClearDate: new Date(),
   }
 });
 
@@ -32,6 +35,7 @@ let body = document.getElementsByTagName("body")[0];
 
 // eventing
 startButton.addEventListener("click", startTimer);
+window.onfocus = zeroSessionsOnNewDays;
 window.onkeyup = function(e) { pressedKeys[e.key] = false; };
 window.onkeydown = function(e) { pressedKeys[e.key] = true; };
 window.onkeypress = reactToKeys;
@@ -39,14 +43,20 @@ window.onkeypress = reactToKeys;
 init();
 
 function init() {
-  store.set("sessionCount", 0); //todo: remove this once daily reset functionality is in place
-
   victoryClip = new Audio(store.get('victoryClipPath'));
   victoryClip.volume = store.get("volume");
-  let sessionsAtLaunch = store.get("sessionCount");
-  if (sessionsAtLaunch > 0) {
-    counter.innerHTML = sessionsAtLaunch.toString();
+
+  zeroSessionsOnNewDays();
+}
+
+function zeroSessionsOnNewDays() {
+  if (dayjs().isAfter(store.get('lastSessionClearDate'), 'date')) {
+    console.log('cleared sessions because it is a new day');
+    store.set("sessionCount", 0);
+    store.set("lastSessionClearDate", new Date())
   }
+  let count = store.get("sessionCount");
+  counter.innerHTML = count > 0 ? count.toString() : '';
 }
 
 function reactToKeys(event) {
